@@ -9,6 +9,8 @@ loads .env and extracts OPENAI_API_KEY
 # Libraries
 
 import os
+import sqlite3
+from db_action import DatabaseThat
 from dotenv import load_dotenv, dotenv_values
 from openai import OpenAI
 
@@ -45,6 +47,10 @@ res = client.chat.completions.create(
     messages=messages,
 )
 
-# Print the response
-print(res.choices[0].message.content)
-print(res.usage)
+# Save the response and tokenusage to the database
+db = DatabaseThat("token_usage.db")
+db.open_database()
+db.add_token_usage(MODEL, 33, 33, res)
+db.show_all_usages()
+
+print("Done!")
