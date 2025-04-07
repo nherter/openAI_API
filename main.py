@@ -50,7 +50,7 @@ res = client.chat.completions.create(
 # Save the response and tokenusage to the database
 db = DatabaseThat("token_usage.db")
 db.open_database()
-db.add_token_usage(MODEL, 33, 33, res)
+db.add_token_usage(MODEL, res.usage.promt_tokens, res.usage.completion_tokens, res)
 db.show_all_usages()
 
 print("Done!")
