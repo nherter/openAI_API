@@ -51,6 +51,7 @@ res = client.chat.completions.create(
 db = DatabaseThat("token_usage.db")
 db.open_database()
 db.add_token_usage(MODEL, res.usage.prompt_tokens, res.usage.completion_tokens, "OpenAI")
+db.total_token_cost()
 db.show_all_usages()
 
 print("Done!")
