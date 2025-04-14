@@ -54,4 +54,24 @@ db.add_token_usage(MODEL, res.usage.prompt_tokens, res.usage.completion_tokens, 
 db.total_token_cost()
 db.show_all_usages()
 
+# Give the Assistat context for a follow up question
+messages.append({"role" : "assistant", "content" : res.choices[0].message.content})
+
+# Add flow up question
+flow_up_question = "and of germany?"
+messages.append({"role" : "user", "content" : flow_up_question})
+
+# Create the OpenAI Client for the follow up question
+res = client.chat.completions.create(
+    model=MODEL,
+    messages=messages,
+)
+
+# Add usage to the database
+db.add_token_usage(MODEL, res.usage.prompt_tokens, res.usage.completion_tokens, "OpenAI")
+
+# Print the response
+response = res.choices[0].message.content
+print(response)
+
 print("Done!")
