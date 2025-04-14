@@ -44,7 +44,7 @@ class DatabaseThat:
             self.__cursor.close()
         if self.__conn:
             self.__conn.close()
-    
+
     def total_token_cost(self):
         """Summiert alle kosten"""
         self.__cursor.execute("SELECT prompt_cost, response_cost FROM deine_tabelle")
@@ -59,17 +59,16 @@ class DatabaseThat:
 
         total_cost = total_cost_prompt + total_cost_response
         print(f"""
-        Prompt cost: {total_cost_prompt} 
+        Prompt cost: {total_cost_prompt}
         Response cost: {total_cost_response}
         Total: {total_cost}
         """)
 
-        price_per_token = 0,15/1000000
+        price_in_per_million = total_cost * 0.15
 
-        price_in_dollor = total_cost * price_per_token
-        
-        # Das geht nicht iwie mit dem Dollar
-        print(f"The total cost in Dollor are {total_cost * price_per_token}$")
+        price_in_dollor = price_in_per_million / 1000000
+
+        print(f"The total cost in Dollor are {price_in_dollor:0.6f}$")
 
 
     def __del__(self):
